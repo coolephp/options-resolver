@@ -21,6 +21,43 @@ $ composer require coolephp/options-resolver -vvv
 
 ## Usage
 
+``` php
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class Email
+{
+    private $options;
+
+    /**
+     * @return mixed
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Email constructor.
+     */
+    public function __construct(array $options = [])
+    {
+        configure_options($options, function (OptionsResolver $resolver) {
+            $resolver->setDefaults([
+                'host' => 'smtp.example.org',
+                'username' => 'user',
+                'password' => 'password',
+                'port' => 25,
+            ]);
+            $resolver->setRequired(['host', 'username', 'password', 'port']);
+            $resolver->setAllowedTypes('host', 'string');
+            $resolver->setAllowedTypes('username', 'string');
+            $resolver->setAllowedTypes('password', 'string');
+            $resolver->setAllowedTypes('port', 'int');
+        }, $this);
+    }
+}
+```
+
 ## Testing
 
 ``` bash
