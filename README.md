@@ -1,6 +1,6 @@
-# package-skeleton
+# options-resolver
 
-> A PHP package template repository. - 一个 PHP 软件包模板存储库。
+> Elegant verification class initialization options and configuration. - 优雅的校验类初始化选项、配置。
 
 [![Tests](https://github.com/coolephp/options-resolver/workflows/Tests/badge.svg)](https://github.com/coolephp/options-resolver/actions)
 [![Check & fix styling](https://github.com/coolephp/options-resolver/workflows/Check%20&%20fix%20styling/badge.svg)](https://github.com/coolephp/options-resolver/actions)
