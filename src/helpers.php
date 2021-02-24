@@ -22,13 +22,17 @@ if (! function_exists('configure_options')) {
     function configure_options(array $options, Closure $closure, $object = null)
     {
         $resolver = new OptionsResolver();
+
         $closure($resolver);
+
         if ($object instanceof Closure) {
             return $object()->options = $resolver->resolve($options);
         }
+
         if (is_object($object)) {
             return $object->options = $resolver->resolve($options);
         }
+
         if (is_string($object) && class_exists($object)) {
             $object = new $object();
 

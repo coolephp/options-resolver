@@ -21,12 +21,24 @@ $ composer require coolephp/options-resolver -vvv
 
 ## Usage
 
+### Example class
+
 ``` php
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Email
 {
     private $options;
+
+    /**
+     * Email constructor.
+     *
+     * @param  array  $options
+     */
+    public function __construct(array $options = [])
+    {
+        $this->setOptions($options);
+    }
 
     /**
      * @return mixed
@@ -37,11 +49,11 @@ class Email
     }
 
     /**
-     * Email constructor.
+     * @param  array  $options
      */
-    public function __construct(array $options = [])
+    public function setOptions(array $options): void
     {
-        configure_options($options, function (OptionsResolver $resolver) {
+        $this->options = configure_options($options, function (OptionsResolver $resolver) {
             $resolver->setDefaults([
                 'host' => 'smtp.example.org',
                 'username' => 'user',
@@ -53,9 +65,53 @@ class Email
             $resolver->setAllowedTypes('username', 'string');
             $resolver->setAllowedTypes('password', 'string');
             $resolver->setAllowedTypes('port', 'int');
-        }, $this);
+        });
     }
 }
+```
+
+### Initialization
+
+#### All options passed verification
+
+``` php
+$options = [
+    'host'     => 'smtp.example.org',
+    'username' => 'user',
+    'password' => 'password',
+    'port'     => 25,
+];
+$email = new Email($options);
+var_export($email);
+```
+
+``` bash
+Email::__set_state(array(
+   'options' => 
+  array (
+    'host' => 'smtp.example.org',
+    'username' => 'user',
+    'password' => 'password',
+    'port' => 25,
+  ),
+))
+```
+
+#### Option failed verification
+
+``` php
+$options = [
+    'host'     => 'smtp.example.org',
+    'username' => 'user',
+    'password' => 'password',
+    'port'     => '25',
+];
+$email = new Email($options);
+var_export($email);
+```
+
+``` bash
+PHP Fatal error:  Uncaught Symfony\Component\OptionsResolver\Exception\InvalidOptionsException: The option "port" with value "25" is expected to be of type "int", but is of type "string". in /Users/yaozm/Downloads/options-resolver/vendor/symfony/options-resolver/OptionsResolver.php:1030
 ```
 
 ## Testing
